@@ -1,0 +1,31 @@
+<div class="container">
+  <header>
+    <h1>Aprende Lenguaje de Señas</h1>
+    <nav>
+      <a href="#" class="nav-link">Inicio</a>
+      <a href="#" class="nav-link">Lecciones</a>
+      <a href="#" class="nav-link">Practicar</a>
+      <a href="#" class="nav-link">Perfil</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="welcome">
+      <h2>Bienvenido a tu aprendizaje</h2>
+      <p>Aprende lenguaje de señas con lecciones interactivas y práctica en tiempo real.</p>
+      <button (click)="startLesson()">Comenzar</button>
+    </section>
+
+    <section class="lessons-preview">
+      <h3>Lecciones Disponibles</h3>
+      <div class="lesson-card" *ngFor="let lesson of lessons">
+        <h4>{{ lesson.name }}</h4>
+        <p>{{ lesson.description }}</p>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>© 2025 Lenguaje de Señas App</p>
+  </footer>
+</div>
