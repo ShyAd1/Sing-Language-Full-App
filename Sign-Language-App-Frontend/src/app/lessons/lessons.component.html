@@ -1,0 +1,27 @@
+<section class="lessons-preview">
+  <h2>Lecciones de Lenguaje de Señas</h2>
+  <div class="level">
+    <h3>Nivel Básico</h3>
+    <div class="lesson-card" *ngFor="let lesson of basicLessons">
+      <h4>{{ lesson.name }}</h4>
+      <p>{{ lesson.description }}</p>
+      <button (click)="startLesson(lesson)">Comenzar</button>
+    </div>
+  </div>
+  <div class="level">
+    <h3>Nivel Intermedio</h3>
+    <div class="lesson-card" *ngFor="let lesson of intermediateLessons">
+      <h4>{{ lesson.name }}</h4>
+      <p>{{ lesson.description }}</p>
+      <button (click)="startLesson(lesson)">Comenzar</button>
+    </div>
+  </div>
+  <div class="level">
+    <h3>Nivel Avanzado</h3>
+    <div class="lesson-card" *ngFor="let lesson of advancedLessons">
+      <h4>{{ lesson.name }}</h4>
+      <p>{{ lesson.description }}</p>
+      <button (click)="startLesson(lesson)">Comenzar</button>
+    </div>
+  </div>
+</section>
