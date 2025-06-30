@@ -1,0 +1,73 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Variables CSS globales para paleta PIXEL ART */
+:root {
+  /* Colores principales estilo 8-bit */
+  --neon-pink: #FF00FF;
+  --neon-green: #00FF00;
+  --pixel-pink: #FF69B4;
+  --deep-black: #000000;
+  --star-yellow: #FFFF00;
+  --cyber-cyan: #00FFFF;
+  --dark-bg: #0A0A0A;
+  --retro-red: #FF0000;
+  --pixel-white: #FFFFFF;
+  --pixel-gray: #808080;
+  
+  /* Sombras pixeladas (sin blur) */
+  --shadow-pixel-pink: 2px 2px 0 #FF00FF;
+  --shadow-pixel-green: 2px 2px 0 #00FF00;
+  --shadow-pixel-cyan: 2px 2px 0 #00FFFF;
+  --shadow-pixel-yellow: 2px 2px 0 #FFFF00;
+}
+
+/* Estilos base para el tema PIXEL ART */
+body {
+  background-color: var(--dark-bg);
+  color: var(--neon-pink);
+  font-family: 'Courier New', monospace;
+  /* Renderizado pixelado para toda la página */
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: crisp-edges;
+  /* Desactivar suavizado de fuentes */
+  -webkit-font-smoothing: none;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Clases utilitarias PIXEL ART */
+@layer utilities {
+  .text-pixel-shadow {
+    text-shadow: var(--shadow-pixel-pink);
+  }
+  
+  .border-pixel-glow {
+    border-color: var(--cyber-cyan);
+    box-shadow: 2px 2px 0 var(--cyber-cyan);
+  }
+  
+  .bg-pixel-pattern {
+    background-image: 
+      linear-gradient(45deg, var(--dark-bg) 25%, transparent 25%),
+      linear-gradient(-45deg, var(--dark-bg) 25%, transparent 25%),
+      linear-gradient(45deg, transparent 75%, var(--dark-bg) 75%),
+      linear-gradient(-45deg, transparent 75%, var(--dark-bg) 75%);
+    background-size: 4px 4px;
+    background-position: 0 0, 0 2px, 2px -2px, -2px 0px;
+  }
+  
+  .pixel-font {
+    font-family: 'Courier New', monospace;
+    font-weight: bold;
+    letter-spacing: 0.1em;
+  }
+  
+  /* Efectos de pixelación */
+  .pixelated {
+    image-rendering: pixelated;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: crisp-edges;
+  }
+}

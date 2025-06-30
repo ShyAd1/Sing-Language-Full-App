@@ -1,0 +1,135 @@
+<div class="pixel-bg min-h-screen flex items-center justify-center p-4">
+  <div class="login-container max-w-lg w-full pixel-fade-in">
+    <!-- Estrellas decorativas -->
+    <div class="absolute top-8 left-8 pixel-stars delay-1">★</div>
+    <div class="absolute top-12 right-12 pixel-stars delay-2">★</div>
+    <div class="absolute bottom-8 left-12 pixel-stars delay-3">★</div>
+    <div class="absolute bottom-12 right-8 pixel-stars delay-4">★</div>
+
+    <!-- Botón Volver -->
+    <button class="back-button mb-6" (click)="volver()">← VOLVER</button>
+
+    <!-- Título del login -->
+    <h1 class="login-title mb-8 delay-1">
+      INICIAR<br />
+      SESIÓN
+    </h1>
+
+    <!-- Formulario de login -->
+    <form
+      class="login-form delay-2"
+      (ngSubmit)="onSubmit()"
+      #loginForm="ngForm"
+    >
+      <!-- Mensajes de estado -->
+      <div class="error-message" *ngIf="errorMessage">
+        ⚠️ {{ errorMessage }}
+      </div>
+      <div
+        class="success-message"
+        *ngIf="successMessage"
+        style="
+          color: var(--neon-green);
+          font-family: 'Courier New', monospace;
+          margin-bottom: 1rem;
+        "
+      >
+        ✅ {{ successMessage }}
+      </div>
+
+      <!-- Email -->
+      <div class="form-group">
+        <label class="form-label" for="email">📧 CORREO ELECTRÓNICO</label>
+        <input
+          type="email"
+          id="email"
+          name="email"
+          class="pixel-input"
+          [(ngModel)]="loginData.email"
+          required
+          email
+          placeholder="tu@correo.com"
+          #email="ngModel"
+        />
+        <div class="error-message" *ngIf="email.invalid && email.touched">
+          <span *ngIf="email.errors?.['required']"
+            >⚠️ El email es requerido</span
+          >
+          <span *ngIf="email.errors?.['email']"
+            >⚠️ Formato de email inválido</span
+          >
+        </div>
+      </div>
+
+      <!-- Contraseña -->
+      <div class="form-group">
+        <label class="form-label" for="password">🔒 CONTRASEÑA</label>
+        <input
+          type="password"
+          id="password"
+          name="password"
+          class="pixel-input"
+          [(ngModel)]="loginData.password"
+          required
+          minlength="6"
+          placeholder="Tu contraseña"
+          #password="ngModel"
+        />
+        <div class="error-message" *ngIf="password.invalid && password.touched">
+          <span *ngIf="password.errors?.['required']"
+            >⚠️ La contraseña es requerida</span
+          >
+          <span *ngIf="password.errors?.['minlength']"
+            >⚠️ Mínimo 6 caracteres</span
+          >
+        </div>
+      </div>
+
+      <!-- Recordar sesión -->
+      <div class="form-group checkbox-group">
+        <label class="checkbox-label">
+          <input
+            type="checkbox"
+            name="rememberMe"
+            class="pixel-checkbox"
+            [(ngModel)]="loginData.rememberMe"
+          />
+          💾 Recordar sesión
+        </label>
+      </div>
+
+      <!-- Botones -->
+      <div class="form-buttons delay-4">
+        <button
+          type="submit"
+          class="login-button"
+          [disabled]="!loginForm.valid || isLoading"
+        >
+          <span *ngIf="!isLoading">🔐 INICIAR SESIÓN</span>
+          <span *ngIf="isLoading">⏳ INGRESANDO...</span>
+        </button>
+      </div>
+    </form>
+
+    <!-- Enlaces adicionales -->
+    <div class="login-links delay-5">
+      <div class="link-group">
+        <a href="#" class="pixel-link" (click)="recuperarPassword($event)">
+          🔑 ¿Olvidaste tu contraseña?
+        </a>
+      </div>
+      <div class="link-group">
+        <span class="info-text">¿No tienes cuenta?</span>
+        <a routerLink="/register" class="pixel-link-register">
+          🚀 Regístrate aquí
+        </a>
+      </div>
+    </div>
+
+    <!-- Información adicional -->
+    <div class="login-info delay-5">
+      <p class="info-text">🎮 ¡Bienvenido de vuelta! 🎮</p>
+      <p class="info-subtext">Continúa tu aprendizaje donde lo dejaste</p>
+    </div>
+  </div>
+</div>

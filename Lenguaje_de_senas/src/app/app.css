@@ -1,0 +1,15 @@
+/* ESTILOS GLOBALES DEL COMPONENTE APP */
+/* El componente app es solo el shell principal que contiene el router-outlet */
+
+/* Asegurar que el contenido ocupe toda la pantalla */
+:host {
+  display: block;
+  min-height: 100vh;
+  width: 100%;
+}
+
+/* Estilos básicos para el router-outlet */
+router-outlet {
+  display: block;
+  width: 100%;
+}

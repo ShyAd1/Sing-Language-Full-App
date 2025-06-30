@@ -1,0 +1,252 @@
+<div class="pixel-bg min-h-screen flex items-center justify-center p-4">
+  <div class="register-container max-w-2xl w-full pixel-fade-in">
+    <!-- Estrellas decorativas -->
+    <div class="absolute top-8 left-8 pixel-stars delay-1">★</div>
+    <div class="absolute top-12 right-12 pixel-stars delay-2">★</div>
+    <div class="absolute bottom-8 left-12 pixel-stars delay-3">★</div>
+    <div class="absolute bottom-12 right-8 pixel-stars delay-4">★</div>
+
+    <!-- Botón Volver -->
+    <button class="back-button mb-6" (click)="volver()">← VOLVER</button>
+
+    <!-- Título del registro -->
+    <h1 class="register-title mb-8 delay-1">
+      NUEVO<br />
+      USUARIO
+    </h1>
+
+    <!-- Formulario de registro -->
+    <form
+      class="register-form delay-2"
+      (ngSubmit)="onSubmit()"
+      #registerForm="ngForm"
+    >
+      <!-- Mensajes de estado -->
+      <div class="error-message" *ngIf="errorMessage">
+        ⚠️ {{ errorMessage }}
+      </div>
+      <div
+        class="success-message"
+        *ngIf="successMessage"
+        style="
+          color: var(--neon-green);
+          font-family: 'Courier New', monospace;
+          margin-bottom: 1rem;
+        "
+      >
+        ✅ {{ successMessage }}
+      </div>
+
+      <!-- Nombre -->
+      <div class="form-group">
+        <label class="form-label" for="nombre">👤 NOMBRE</label>
+        <input
+          type="text"
+          id="nombre"
+          name="nombre"
+          class="pixel-input"
+          [(ngModel)]="userData.nombre"
+          required
+          minlength="2"
+          maxlength="50"
+          placeholder="Tu nombre"
+          #nombre="ngModel"
+        />
+        <div class="error-message" *ngIf="nombre.invalid && nombre.touched">
+          <span *ngIf="nombre.errors?.['required']"
+            >⚠️ El nombre es requerido</span
+          >
+          <span *ngIf="nombre.errors?.['minlength']"
+            >⚠️ Mínimo 2 caracteres</span
+          >
+          <span *ngIf="nombre.errors?.['maxlength']"
+            >⚠️ Máximo 50 caracteres</span
+          >
+        </div>
+      </div>
+
+      <!-- Apellido -->
+      <div class="form-group">
+        <label class="form-label" for="apellido">� APELLIDO</label>
+        <input
+          type="text"
+          id="apellido"
+          name="apellido"
+          class="pixel-input"
+          [(ngModel)]="userData.apellido"
+          required
+          minlength="2"
+          maxlength="50"
+          placeholder="Tu apellido"
+          #apellido="ngModel"
+        />
+        <div class="error-message" *ngIf="apellido.invalid && apellido.touched">
+          <span *ngIf="apellido.errors?.['required']"
+            >⚠️ El apellido es requerido</span
+          >
+          <span *ngIf="apellido.errors?.['minlength']"
+            >⚠️ Mínimo 2 caracteres</span
+          >
+          <span *ngIf="apellido.errors?.['maxlength']"
+            >⚠️ Máximo 50 caracteres</span
+          >
+        </div>
+      </div>
+
+      <!-- Email -->
+      <div class="form-group">
+        <label class="form-label" for="email">� CORREO ELECTRÓNICO</label>
+        <input
+          type="email"
+          id="email"
+          name="email"
+          class="pixel-input"
+          [(ngModel)]="userData.email"
+          required
+          email
+          placeholder="ejemplo@correo.com"
+          #email="ngModel"
+        />
+        <div class="error-message" *ngIf="email.invalid && email.touched">
+          <span *ngIf="email.errors?.['required']"
+            >⚠️ El email es requerido</span
+          >
+          <span *ngIf="email.errors?.['email']"
+            >⚠️ Formato de email inválido</span
+          >
+        </div>
+      </div>
+
+      <!-- Edad -->
+      <div class="form-group">
+        <label class="form-label" for="edad">🎂 EDAD</label>
+        <input
+          type="number"
+          id="edad"
+          name="edad"
+          class="pixel-input"
+          [(ngModel)]="userData.edad"
+          required
+          min="5"
+          max="120"
+          placeholder="Tu edad"
+          #edad="ngModel"
+        />
+        <div class="error-message" *ngIf="edad.invalid && edad.touched">
+          <span *ngIf="edad.errors?.['required']">⚠️ La edad es requerida</span>
+          <span *ngIf="edad.errors?.['min']">⚠️ Edad mínima: 5 años</span>
+          <span *ngIf="edad.errors?.['max']">⚠️ Edad máxima: 120 años</span>
+        </div>
+      </div>
+
+      <!-- Género -->
+      <div class="form-group">
+        <label class="form-label" for="genero">⚧ GÉNERO</label>
+        <select
+          id="genero"
+          name="genero"
+          class="pixel-select"
+          [(ngModel)]="userData.genero"
+          required
+          #genero="ngModel"
+        >
+          <option value="">Selecciona tu género</option>
+          <option value="masculino">👨 Masculino</option>
+          <option value="femenino">👩 Femenino</option>
+          <option value="otro">⚧ Otro</option>
+          <option value="prefiero-no-decir">❓ Prefiero no decir</option>
+        </select>
+        <div class="error-message" *ngIf="genero.invalid && genero.touched">
+          <span *ngIf="genero.errors?.['required']"
+            >⚠️ Selecciona tu género</span
+          >
+        </div>
+      </div>
+
+      <!-- Nivel de experiencia -->
+      <div class="form-group">
+        <label class="form-label" for="experiencia"
+          >📊 NIVEL DE EXPERIENCIA</label
+        >
+        <select
+          id="experiencia"
+          name="experiencia"
+          class="pixel-select"
+          [(ngModel)]="userData.experiencia"
+          required
+          #experiencia="ngModel"
+        >
+          <option value="">Selecciona tu nivel</option>
+          <option value="principiante">
+            🌱 Principiante - Nunca he usado lenguaje de señas
+          </option>
+          <option value="intermedio">
+            ⭐ Intermedio - Conozco algunas señas básicas
+          </option>
+          <option value="avanzado">
+            🏆 Avanzado - Tengo experiencia considerable
+          </option>
+        </select>
+        <div
+          class="error-message"
+          *ngIf="experiencia.invalid && experiencia.touched"
+        >
+          <span *ngIf="experiencia.errors?.['required']"
+            >⚠️ Selecciona tu nivel de experiencia</span
+          >
+        </div>
+      </div>
+
+      <!-- Términos y condiciones -->
+      <div class="form-group checkbox-group">
+        <label class="checkbox-label">
+          <input
+            type="checkbox"
+            name="acceptTerms"
+            class="pixel-checkbox"
+            [(ngModel)]="userData.acceptTerms"
+            required
+            #acceptTerms="ngModel"
+          />
+          📋 Acepto los términos y condiciones
+        </label>
+        <div
+          class="error-message"
+          *ngIf="acceptTerms.invalid && acceptTerms.touched"
+        >
+          <span *ngIf="acceptTerms.errors?.['required']"
+            >⚠️ Debes aceptar los términos y condiciones</span
+          >
+        </div>
+      </div>
+
+      <!-- Botones -->
+      <div class="form-buttons delay-4">
+        <button
+          type="submit"
+          class="register-button"
+          [disabled]="!registerForm.valid || isLoading"
+        >
+          <span *ngIf="!isLoading">🚀 CREAR CUENTA</span>
+          <span *ngIf="isLoading">⏳ CREANDO...</span>
+        </button>
+        <button
+          type="button"
+          class="cancel-button"
+          (click)="limpiarFormulario()"
+          [disabled]="isLoading"
+        >
+          🗑️ LIMPIAR
+        </button>
+      </div>
+    </form>
+
+    <!-- Información adicional -->
+    <div class="register-info delay-5">
+      <p class="info-text">💎 ¡Únete a nuestra comunidad de aprendizaje! 💎</p>
+      <p class="info-subtext">
+        Accede a lecciones, practica con otros usuarios y obtén certificaciones
+      </p>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,291 @@
+/* PIXEL ART STYLES - HOME LANDING PAGE */
+
+/* Contenedor principal con estilo pixel art */
+.retro-container {
+  background: var(--dark-bg);
+  border: 4px solid var(--cyber-cyan);
+  border-radius: 0; /* Sin bordes redondeados para pixel art */
+  /* Sombra pixelada 3D */
+  box-shadow: 
+    8px 0 0 0 var(--cyber-cyan),
+    0 8px 0 0 var(--cyber-cyan),
+    8px 8px 0 0 var(--cyber-cyan),
+    12px 12px 0 0 rgba(0, 255, 255, 0.5);
+  padding: 2rem;
+  margin: 1rem;
+  position: relative;
+  overflow: hidden;
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: crisp-edges;
+}
+
+/* Título principal estilo pixel art */
+.pixel-title {
+  color: var(--neon-pink);
+  font-family: 'Courier New', monospace;
+  font-weight: bold;
+  text-align: center;
+  letter-spacing: 0.3em;
+  font-size: clamp(2rem, 5vw, 4rem);
+  /* Sombra pixelada para el texto */
+  text-shadow: 
+    2px 0 0 var(--neon-pink),
+    0 2px 0 var(--neon-pink),
+    2px 2px 0 var(--neon-pink),
+    4px 4px 0 rgba(255, 0, 255, 0.5);
+  line-height: 1.2;
+  image-rendering: pixelated;
+}
+
+/* Botón principal estilo 8-bit */
+.neon-button {
+  background: var(--dark-bg);
+  border: 4px solid var(--neon-green);
+  border-radius: 0;
+  color: var(--neon-green);
+  padding: 1rem 2rem;
+  font-family: 'Courier New', monospace;
+  font-weight: bold;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  position: relative;
+  transition: all 0.1s ease;
+  /* Sombra pixelada */
+  box-shadow: 
+    4px 0 0 0 var(--neon-green),
+    0 4px 0 0 var(--neon-green),
+    4px 4px 0 0 var(--neon-green);
+  image-rendering: pixelated;
+}
+
+.neon-button:hover {
+  background: var(--neon-green);
+  color: var(--deep-black);
+  transform: translate(2px, 2px); /* Efecto de "presionar" */
+  box-shadow: 
+    2px 0 0 0 var(--neon-green),
+    0 2px 0 0 var(--neon-green),
+    2px 2px 0 0 var(--neon-green);
+}
+
+.neon-button:active {
+  transform: translate(4px, 4px);
+  box-shadow: none;
+}
+
+/* Botón secundario pixel art */
+.pixel-secondary-button {
+  background: var(--dark-bg);
+  border: 4px solid var(--pixel-pink);
+  border-radius: 0;
+  color: var(--pixel-pink);
+  padding: 1rem 2rem;
+  font-family: 'Courier New', monospace;
+  font-weight: bold;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  transition: all 0.1s ease;
+  box-shadow: 
+    4px 0 0 0 var(--pixel-pink),
+    0 4px 0 0 var(--pixel-pink),
+    4px 4px 0 0 var(--pixel-pink);
+  image-rendering: pixelated;
+}
+
+.pixel-secondary-button:hover {
+  background: var(--pixel-pink);
+  color: var(--deep-black);
+  transform: translate(2px, 2px);
+  box-shadow: 
+    2px 0 0 0 var(--pixel-pink),
+    0 2px 0 0 var(--pixel-pink),
+    2px 2px 0 0 var(--pixel-pink);
+}
+
+.pixel-secondary-button:active {
+  transform: translate(4px, 4px);
+  box-shadow: none;
+}
+
+/* Tarjetas de características estilo pixel */
+.pixel-card {
+  background: var(--dark-bg);
+  border: 3px solid;
+  border-radius: 0;
+  padding: 1.5rem;
+  transition: all 0.1s ease;
+  position: relative;
+  image-rendering: pixelated;
+}
+
+.pixel-card-pink {
+  border-color: var(--neon-pink);
+  box-shadow: 
+    3px 0 0 0 var(--neon-pink),
+    0 3px 0 0 var(--neon-pink),
+    3px 3px 0 0 var(--neon-pink);
+}
+
+.pixel-card-green {
+  border-color: var(--neon-green);
+  box-shadow: 
+    3px 0 0 0 var(--neon-green),
+    0 3px 0 0 var(--neon-green),
+    3px 3px 0 0 var(--neon-green);
+}
+
+.pixel-card-cyan {
+  border-color: var(--cyber-cyan);
+  box-shadow: 
+    3px 0 0 0 var(--cyber-cyan),
+    0 3px 0 0 var(--cyber-cyan),
+    3px 3px 0 0 var(--cyber-cyan);
+}
+
+.pixel-card-yellow {
+  border-color: var(--star-yellow);
+  box-shadow: 
+    3px 0 0 0 var(--star-yellow),
+    0 3px 0 0 var(--star-yellow),
+    3px 3px 0 0 var(--star-yellow);
+}
+
+.pixel-card:hover {
+  transform: translate(1px, 1px);
+  box-shadow: 
+    2px 0 0 0 currentColor,
+    0 2px 0 0 currentColor,
+    2px 2px 0 0 currentColor !important;
+}
+
+/* Estrellas pixeladas */
+.pixel-stars {
+  color: var(--star-yellow);
+  font-size: 2rem;
+  font-family: 'Courier New', monospace;
+  animation: pixelTwinkle 1.5s steps(2, end) infinite;
+  image-rendering: pixelated;
+  text-shadow: 
+    1px 0 0 var(--star-yellow),
+    0 1px 0 var(--star-yellow),
+    1px 1px 0 var(--star-yellow);
+}
+
+@keyframes pixelTwinkle {
+  0% { opacity: 1; }
+  50% { opacity: 0.3; }
+  100% { opacity: 1; }
+}
+
+/* Fondo con patrón pixel mejorado */
+.pixel-bg {
+  background: var(--dark-bg);
+  background-image: 
+    /* Grid pixelado */
+    linear-gradient(90deg, rgba(0, 255, 255, 0.1) 1px, transparent 1px),
+    linear-gradient(rgba(0, 255, 255, 0.1) 1px, transparent 1px),
+    /* Patrón de puntos */
+    radial-gradient(circle at 50% 50%, var(--cyber-cyan) 1px, transparent 1px);
+  background-size: 
+    20px 20px,
+    20px 20px,
+    40px 40px;
+  min-height: 100vh;
+  image-rendering: pixelated;
+  position: relative;
+}
+
+@keyframes scanLines {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(100%); }
+}
+
+/* Subtítulos pixel */
+.pixel-subtitle {
+  color: var(--cyber-cyan);
+  font-family: 'Courier New', monospace;
+  text-align: center;
+  margin-top: 1rem;
+  font-size: 1.2rem;
+  letter-spacing: 0.2em;
+  text-shadow: 
+    1px 0 0 var(--cyber-cyan),
+    0 1px 0 var(--cyber-cyan),
+    1px 1px 0 var(--cyber-cyan);
+}
+
+/* Animaciones de aparición pixelada */
+@keyframes pixelFadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(20px) scale(0.9);
+  }
+  50% {
+    opacity: 0.5;
+    transform: translateY(10px) scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.pixel-fade-in {
+  animation: pixelFadeIn 0.8s steps(8, end) forwards;
+}
+
+/* Delay para elementos */
+.delay-1 { animation-delay: 0.1s; }
+.delay-2 { animation-delay: 0.2s; }
+.delay-3 { animation-delay: 0.3s; }
+.delay-4 { animation-delay: 0.4s; }
+.delay-5 { animation-delay: 0.5s; }
+
+/* Efectos de hover en botones */
+.neon-button:hover::after,
+.pixel-secondary-button:hover::after {
+  content: '♪';
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  color: var(--star-yellow);
+  font-size: 12px;
+  animation: soundWave 0.3s ease-out;
+}
+
+@keyframes soundWave {
+  0% { transform: scale(0.5); opacity: 0; }
+  50% { transform: scale(1.2); opacity: 1; }
+  100% { transform: scale(1); opacity: 0; }
+}
+
+/* Responsive para pixel art */
+@media (max-width: 768px) {
+  .pixel-title {
+    font-size: 2rem;
+    line-height: 1.1;
+  }
+  
+  .retro-container {
+    padding: 1rem;
+    margin: 0.5rem;
+    border-width: 3px;
+  }
+  
+  .neon-button, .pixel-secondary-button {
+    padding: 0.75rem 1.5rem;
+    font-size: 0.9rem;
+  }
+  
+  .pixel-card {
+    padding: 1rem;
+    border-width: 2px;
+  }
+  
+  .pixel-stars {
+    font-size: 1.5rem;
+  }
+}
