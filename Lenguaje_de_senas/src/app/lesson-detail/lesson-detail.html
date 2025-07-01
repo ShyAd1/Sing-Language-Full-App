@@ -15,7 +15,6 @@
 
   <!-- Contenedor principal -->
   <div class="lesson-container pixel-fade-in delay-2">
-
     <!-- Explicación de la lección -->
     <div class="lesson-explanation delay-3">
       <h2 class="explanation-title">📚 ¿QUÉ APRENDERÁS?</h2>
@@ -65,11 +64,59 @@
       <div class="modal-body">
         <!-- Área del video -->
         <div class="video-player">
-          <div class="video-placeholder">
-            <span class="placeholder-icon">{{ selectedVideo?.thumbnail }}</span>
-            <p class="placeholder-text">VIDEO DE DEMOSTRACIÓN</p>
-            <p class="video-description">{{ selectedVideo?.description }}</p>
+          <!-- Video real si hay URL -->
+          <div
+            class="video-container"
+            *ngIf="selectedVideo?.videoUrl; else placeholder"
+          >
+            <!-- YouTube embed -->
+            <iframe
+              *ngIf="selectedVideo && isYouTubeUrl(selectedVideo.videoUrl)"
+              [src]="selectedVideo && getSafeUrl(selectedVideo.videoUrl)"
+              class="video-iframe"
+              frameborder="0"
+              allowfullscreen
+            >
+            </iframe>
+
+            <!-- Video MP4 directo -->
+            <video
+              *ngIf="selectedVideo && isMp4Url(selectedVideo.videoUrl)"
+              [src]="selectedVideo.videoUrl"
+              class="video-element"
+              controls
+              autoplay
+            >
+              Tu navegador no soporta el elemento video.
+            </video>
+
+            <!-- Placeholder si no es YouTube ni MP4 -->
+            <div
+              *ngIf="
+                selectedVideo &&
+                !isYouTubeUrl(selectedVideo.videoUrl) &&
+                !isMp4Url(selectedVideo.videoUrl)
+              "
+              class="video-placeholder"
+            >
+              <span class="placeholder-icon">{{
+                selectedVideo.thumbnail
+              }}</span>
+              <p class="placeholder-text">VIDEO DE DEMOSTRACIÓN</p>
+              <p class="video-url-text">{{ selectedVideo.videoUrl }}</p>
+            </div>
           </div>
+
+          <!-- Placeholder cuando no hay URL -->
+          <ng-template #placeholder>
+            <div class="video-placeholder">
+              <span class="placeholder-icon">{{
+                selectedVideo?.thumbnail
+              }}</span>
+              <p class="placeholder-text">VIDEO DE DEMOSTRACIÓN</p>
+              <p class="video-description">{{ selectedVideo?.description }}</p>
+            </div>
+          </ng-template>
         </div>
 
         <!-- Instrucciones -->
@@ -82,6 +129,362 @@
             <li>💪 Practica hasta que te sientas cómodo</li>
           </ul>
         </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de Prueba -->
+  <div class="test-modal" *ngIf="showTestModal" (click)="closeTestModal()">
+    <div class="test-modal-content" (click)="$event.stopPropagation()">
+      <!-- Header de la prueba -->
+      <div class="test-header">
+        <h3 class="test-title">🧪 PRUEBA: {{ currentLesson.name }}</h3>
+        <button class="close-button" (click)="closeTestModal()">✕</button>
+      </div>
+
+      <!-- Progreso de la prueba -->
+      <div class="test-progress" *ngIf="testSession">
+        <div class="progress-info">
+          <span class="question-counter"
+            >Pregunta {{ (testSession.currentQuestionIndex || 0) + 1 }} de
+            {{ testSession.totalQuestions || 0 }}</span
+          >
+          <span class="score-counter"
+            >Puntuación: {{ testSession.score || 0 }}/{{
+              testSession.maxScore || 0
+            }}</span
+          >
+        </div>
+        <div class="progress-bar-container">
+          <div
+            class="progress-bar-fill"
+            [style.width.%]="
+              testSession && testSession.totalQuestions
+                ? Math.min(
+                    100,
+                    ((testSession.currentQuestionIndex + 1) /
+                      testSession.totalQuestions) *
+                      100
+                  )
+                : 0
+            "
+          ></div>
+        </div>
+      </div>
+
+      <!-- Contenido de la pregunta -->
+      <div
+        class="test-content"
+        *ngIf="currentQuestion && !testSession?.isCompleted"
+      >
+        <!-- Pregunta de detección de gesto -->
+        <div
+          *ngIf="currentQuestion.type === 'gesture'"
+          class="gesture-question"
+        >
+          <div class="question-section">
+            <h4 class="question-text">{{ currentQuestion.question }}</h4>
+            <p class="question-instruction">
+              {{ currentQuestion.instruction }}
+            </p>
+            <div class="expected-gesture">
+              <span class="expected-icon">{{
+                currentQuestion.expectedIcon
+              }}</span>
+              <p class="expected-label">Gesto esperado</p>
+            </div>
+          </div>
+
+          <div class="gesture-actions">
+            <button
+              class="camera-button"
+              (click)="startGestureCapture()"
+              [disabled]="isAnswerSubmitted"
+            >
+              📹 ACTIVAR CÁMARA
+            </button>
+          </div>
+        </div>
+
+        <!-- Pregunta de opción múltiple -->
+        <div
+          *ngIf="
+            currentQuestion.type === 'multiple-choice' ||
+            currentQuestion.type === 'matching'
+          "
+          class="choice-question"
+        >
+          <div class="question-section">
+            <h4 class="question-text">{{ currentQuestion.question }}</h4>
+            <p class="question-instruction">
+              {{ currentQuestion.instruction }}
+            </p>
+
+            <!-- Video de referencia para la pregunta -->
+            <div
+              class="reference-video"
+              *ngIf="currentQuestion.referenceVideo && !hasViewedReferenceVideo"
+            >
+              <h5 class="video-label">📺 VIDEO DE REFERENCIA:</h5>
+
+              <!-- Área del video expandido - AUTO-ABIERTO -->
+              <div class="reference-video-expanded" *ngIf="showInlineVideo">
+                <div class="inline-video-player">
+                  <!-- Video real si hay URL -->
+                  <div
+                    class="inline-video-container"
+                    *ngIf="
+                      currentQuestion.referenceVideo?.videoUrl;
+                      else inlinePlaceholder
+                    "
+                  >
+                    <!-- YouTube embed -->
+                    <iframe
+                      *ngIf="
+                        currentQuestion.referenceVideo.videoUrl &&
+                        isYouTubeUrl(currentQuestion.referenceVideo.videoUrl)
+                      "
+                      [src]="
+                        currentQuestion.referenceVideo.videoUrl &&
+                        getSafeUrl(currentQuestion.referenceVideo.videoUrl)
+                      "
+                      class="inline-video-iframe"
+                      frameborder="0"
+                      allowfullscreen
+                    >
+                    </iframe>
+
+                    <!-- Video MP4 directo -->
+                    <video
+                      *ngIf="
+                        currentQuestion.referenceVideo.videoUrl &&
+                        isMp4Url(currentQuestion.referenceVideo.videoUrl)
+                      "
+                      [src]="currentQuestion.referenceVideo.videoUrl"
+                      class="inline-video-element"
+                      controls
+                      autoplay
+                    >
+                      Tu navegador no soporta el elemento video.
+                    </video>
+
+                    <!-- Placeholder si no es YouTube ni MP4 -->
+                    <div
+                      *ngIf="
+                        currentQuestion.referenceVideo.videoUrl &&
+                        !isYouTubeUrl(
+                          currentQuestion.referenceVideo.videoUrl
+                        ) &&
+                        !isMp4Url(currentQuestion.referenceVideo.videoUrl)
+                      "
+                      class="inline-video-placeholder"
+                    >
+                      <span class="inline-video-icon">{{
+                        currentQuestion.referenceVideo.thumbnail
+                      }}</span>
+                      <p class="inline-video-text">VIDEO DE DEMOSTRACIÓN</p>
+                      <p class="inline-video-url">
+                        {{ currentQuestion.referenceVideo.videoUrl }}
+                      </p>
+                    </div>
+                  </div>
+
+                  <!-- Placeholder cuando no hay URL -->
+                  <ng-template #inlinePlaceholder>
+                    <div class="inline-video-placeholder">
+                      <span class="inline-video-icon">{{
+                        currentQuestion.referenceVideo.thumbnail
+                      }}</span>
+                      <p class="inline-video-text">VIDEO DE DEMOSTRACIÓN</p>
+                      <p class="inline-video-description">
+                        {{ currentQuestion.referenceVideo.description }}
+                      </p>
+                    </div>
+                  </ng-template>
+                </div>
+                <div class="inline-video-controls">
+                  <button
+                    class="close-inline-video"
+                    (click)="closeInlineVideo()"
+                  >
+                    ✅ HE VISTO EL VIDEO
+                  </button>
+                </div>
+              </div>
+
+              <!-- Mensaje cuando no se ha visto el video -->
+              <div
+                class="video-requirement-message"
+                *ngIf="!hasViewedReferenceVideo && !showInlineVideo"
+              >
+                <p class="requirement-text">
+                  📹 Debes ver el video de referencia antes de responder
+                </p>
+              </div>
+            </div>
+
+            <!-- Confirmación de video visto -->
+            <div
+              class="video-watched-confirmation"
+              *ngIf="hasViewedReferenceVideo && currentQuestion.referenceVideo"
+            >
+              <p class="confirmation-text">
+                ✅ Video visto. Ahora puedes seleccionar tu respuesta.
+              </p>
+            </div>
+          </div>
+
+          <div class="options-grid">
+            <button
+              *ngFor="let option of currentQuestion.options; let i = index"
+              class="option-button"
+              [class.selected]="selectedAnswer === option"
+              [class.correct]="
+                isAnswerSubmitted && option === currentQuestion.correctAnswer
+              "
+              [class.incorrect]="
+                isAnswerSubmitted &&
+                selectedAnswer === option &&
+                option !== currentQuestion.correctAnswer
+              "
+              [class.disabled]="!canAnswerQuestion()"
+              (click)="selectAnswer(option)"
+              [disabled]="isAnswerSubmitted || !canAnswerQuestion()"
+              [title]="
+                !canAnswerQuestion()
+                  ? 'Debes ver el video de referencia antes de responder'
+                  : ''
+              "
+            >
+              {{ option }}
+            </button>
+          </div>
+
+          <!-- Mensaje de instrucción cuando no se puede responder -->
+          <div
+            class="answer-requirement"
+            *ngIf="!canAnswerQuestion() && !isAnswerSubmitted"
+          >
+            <p class="requirement-text">
+              📺 Primero debes ver el video de referencia y cerrarlo haciendo
+              clic en "HE VISTO EL VIDEO"
+            </p>
+          </div>
+        </div>
+
+        <!-- Feedback -->
+        <div class="test-feedback" *ngIf="testFeedback">
+          <p class="feedback-text">{{ testFeedback }}</p>
+        </div>
+
+        <!-- Botones de acción -->
+        <div class="test-actions" *ngIf="!isAnswerSubmitted">
+          <button
+            class="submit-button"
+            (click)="submitAnswer()"
+            [disabled]="
+              (!selectedAnswer && currentQuestion.type !== 'gesture') ||
+              !canAnswerQuestion()
+            "
+          >
+            ✅ ENVIAR RESPUESTA
+          </button>
+        </div>
+      </div>
+
+      <!-- Resultados finales -->
+      <div class="test-results" *ngIf="testSession?.isCompleted">
+        <div class="results-content">
+          <h3 class="results-title">🎉 ¡PRUEBA COMPLETADA!</h3>
+          <div class="results-stats">
+            <div class="stat-card">
+              <div class="stat-value">{{ testSession?.score || 0 }}</div>
+              <div class="stat-label">Puntos obtenidos</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-value">{{ testSession?.maxScore || 0 }}</div>
+              <div class="stat-label">Puntos máximos</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-value">
+                {{
+                  testSession && testSession.maxScore
+                    ? (
+                        (testSession.score / testSession.maxScore) *
+                        100
+                      ).toFixed(0)
+                    : 0
+                }}%
+              </div>
+              <div class="stat-label">Porcentaje</div>
+            </div>
+          </div>
+          <div class="final-feedback">
+            <p class="final-message">{{ testFeedback }}</p>
+          </div>
+          <div class="results-actions">
+            <button class="retry-button" (click)="startTest()">
+              🔄 REPETIR PRUEBA
+            </button>
+            <button class="continue-button" (click)="closeTestModal()">
+              ➡️ CONTINUAR
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de Cámara -->
+  <div
+    class="camera-modal"
+    *ngIf="showCameraModal"
+    (click)="closeCameraModal()"
+  >
+    <div class="camera-modal-content" (click)="$event.stopPropagation()">
+      <div class="camera-header">
+        <h3 class="camera-title">📹 DETECCIÓN DE GESTO</h3>
+        <button class="close-button" (click)="closeCameraModal()">✕</button>
+      </div>
+
+      <div class="camera-body">
+        <div class="camera-container">
+          <video
+            id="cameraVideo"
+            autoplay
+            playsinline
+            class="camera-video"
+            *ngIf="!cameraError"
+          ></video>
+          <div class="camera-error" *ngIf="cameraError">
+            <p class="error-message">{{ cameraError }}</p>
+          </div>
+        </div>
+
+        <div class="camera-instructions">
+          <p class="camera-instruction">🎯 Realiza el gesto mostrado</p>
+          <div class="target-gesture" *ngIf="currentQuestion">
+            <span class="target-icon">{{ currentQuestion.expectedIcon }}</span>
+            <p class="target-label">{{ currentQuestion.question }}</p>
+          </div>
+
+          <div class="detection-status">
+            <div *ngIf="!gestureDetected && !cameraError" class="detecting">
+              <span class="loading-spinner">⏳</span>
+              <p>Detectando gesto...</p>
+            </div>
+            <div *ngIf="gestureDetected" class="detected">
+              <span class="success-icon">✅</span>
+              <p>¡Gesto detectado correctamente!</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="camera-actions">
+        <button class="cancel-button" (click)="closeCameraModal()">
+          ❌ CANCELAR
+        </button>
       </div>
     </div>
   </div>

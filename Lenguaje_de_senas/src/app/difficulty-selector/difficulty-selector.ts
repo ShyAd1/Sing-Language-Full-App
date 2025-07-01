@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 
@@ -19,7 +19,7 @@ interface Level {
   templateUrl: './difficulty-selector.html',
   styleUrl: './difficulty-selector.css'
 })
-export class DifficultySelector {
+export class DifficultySelector implements OnInit {
   playerName = localStorage.getItem('userEmail') || 'JUGADOR';
 
   levels: Level[] = [
@@ -55,7 +55,9 @@ export class DifficultySelector {
     }
   ];
 
-  constructor(private router: Router) {
+  constructor(private router: Router) {}
+
+  ngOnInit() {
     this.loadProgress();
     this.updateUnlockStatus();
   }

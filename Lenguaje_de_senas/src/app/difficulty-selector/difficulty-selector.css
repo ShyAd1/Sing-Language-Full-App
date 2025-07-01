@@ -1,5 +1,23 @@
 /* DIFFICULTY SELECTOR - Pixel Art Style */
 
+/* Fondo con patrón pixel - Consistente con el resto de la app */
+.pixel-bg {
+  background: var(--dark-bg);
+  background-image: 
+    /* Grid pixelado */
+    linear-gradient(90deg, rgba(0, 255, 255, 0.1) 1px, transparent 1px),
+    linear-gradient(rgba(0, 255, 255, 0.1) 1px, transparent 1px),
+    /* Patrón de puntos */
+    radial-gradient(circle at 50% 50%, var(--cyber-cyan) 1px, transparent 1px);
+  background-size: 
+    20px 20px,
+    20px 20px,
+    40px 40px;
+  min-height: 100vh;
+  image-rendering: pixelated;
+  position: relative;
+}
+
 /* Contenedor principal */
 .difficulty-container {
   background: var(--dark-bg);

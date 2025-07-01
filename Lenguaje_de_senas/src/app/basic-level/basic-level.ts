@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 
@@ -17,7 +17,7 @@ interface LessonClass {
   templateUrl: './basic-level.html',
   styleUrl: './basic-level.css'
 })
-export class BasicLevel {
+export class BasicLevel implements OnInit {
   playerName = localStorage.getItem('userEmail') || 'JUGADOR';
   currentLevel = 'BÁSICO';
   playerLives = 5; // Corazones de vida
@@ -74,9 +74,22 @@ export class BasicLevel {
     }
   ];
 
-  constructor(private router: Router) {
+  constructor(private router: Router) {}
+
+  ngOnInit() {
     this.loadProgress();
     this.calculateOverallProgress();
+    
+    // Escuchar cuando el usuario regresa de una lección
+    window.addEventListener('focus', () => {
+      this.refreshProgress();
+    });
+  }
+
+  refreshProgress() {
+    this.loadProgress();
+    this.calculateOverallProgress();
+    console.log('🔄 Progreso actualizado');
   }
 
   loadProgress() {
