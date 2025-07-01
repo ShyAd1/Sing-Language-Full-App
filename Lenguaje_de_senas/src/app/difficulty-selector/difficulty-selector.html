@@ -1,0 +1,73 @@
+<div class="pixel-bg min-h-screen flex items-center justify-center p-4">
+  <div class="difficulty-container max-w-6xl w-full pixel-fade-in">
+    <!-- Estrellas decorativas -->
+    <div class="absolute top-8 left-8 pixel-stars delay-1">★</div>
+    <div class="absolute top-12 right-12 pixel-stars delay-2">★</div>
+    <div class="absolute bottom-8 left-12 pixel-stars delay-3">★</div>
+    <div class="absolute bottom-12 right-8 pixel-stars delay-4">★</div>
+
+    <!-- Botón Volver y Cerrar Sesión -->
+    <div class="header-buttons mb-6">
+      <button class="logout-button" (click)="logout()">🚪 CERRAR SESIÓN</button>
+    </div>
+
+    <!-- Título principal -->
+    <div class="welcome-section text-center mb-8 delay-1">
+      <h1 class="welcome-title mb-4">¡BIENVENIDO!</h1>
+      <p class="player-name">{{ playerName }}</p>
+    </div>
+
+    <!-- Selección de niveles -->
+    <div class="levels-grid delay-2">
+      <div
+        *ngFor="let level of levels; let i = index"
+        class="level-card"
+        [class]="'level-' + level.color"
+        [class.locked]="!level.unlocked"
+        [class.completed]="level.completed"
+        (click)="selectLevel(level)"
+      >
+        <!-- Icono del nivel -->
+        <div class="level-icon">
+          <span *ngIf="level.unlocked">{{ level.icon }}</span>
+          <span *ngIf="!level.unlocked" class="lock-icon">🔒</span>
+        </div>
+
+        <!-- Nombre del nivel -->
+        <h3 class="level-name">{{ level.name }}</h3>
+
+        <!-- Barra de progreso -->
+        <div class="progress-container">
+          <div
+            class="progress-bar"
+            [style.width.%]="level.progress"
+            [class]="'progress-' + level.color">
+          </div>
+        </div>
+
+        <!-- Descripción -->
+        <p class="level-description" *ngIf="level.unlocked">
+          {{ level.description }}
+        </p>
+        <p class="level-description locked-text" *ngIf="!level.unlocked">
+          🔒 Completa el nivel anterior
+        </p>
+
+        <!-- Estado del nivel -->
+        <div class="level-status">
+          <span *ngIf="level.completed" class="completed-badge">✅ COMPLETADO</span>
+          <span *ngIf="!level.completed && level.unlocked" class="available-badge">🎯 DISPONIBLE</span>
+          <span *ngIf="!level.unlocked" class="locked-badge">🔒 BLOQUEADO</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Información adicional -->
+    <div class="register-info delay-5">
+      <p class="info-text">💎 ¡Únete a nuestra comunidad de aprendizaje! 💎</p>
+      <p class="info-subtext">
+        Accede a lecciones, practica con otros usuarios y obtén certificaciones
+      </p>
+    </div>
+  </div>
+</div>

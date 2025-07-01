@@ -14,6 +14,8 @@ export class Register {
     nombre: '',
     apellido: '',
     email: '',
+    password: '',
+    confirmPassword: '',
     edad: 0,
     genero: '',
     experiencia: '',
@@ -31,6 +33,10 @@ export class Register {
     return this.userData.nombre.trim() !== '' &&
            this.userData.apellido.trim() !== '' &&
            this.userData.email.trim() !== '' &&
+           this.userData.password.trim() !== '' &&
+           this.userData.confirmPassword.trim() !== '' &&
+           this.userData.password === this.userData.confirmPassword &&
+           this.userData.password.length >= 6 &&
            this.userData.edad > 0 &&
            this.userData.genero !== '' &&
            this.userData.experiencia !== '' &&
@@ -40,7 +46,13 @@ export class Register {
   // Enviar formulario (versión simple sin base de datos)
   onSubmit() {
     if (!this.isFormValid()) {
-      this.errorMessage = 'Por favor, completa todos los campos y acepta los términos.';
+      if (this.userData.password !== this.userData.confirmPassword) {
+        this.errorMessage = 'Las contraseñas no coinciden.';
+      } else if (this.userData.password.length < 6) {
+        this.errorMessage = 'La contraseña debe tener al menos 6 caracteres.';
+      } else {
+        this.errorMessage = 'Por favor, completa todos los campos y acepta los términos.';
+      }
       return;
     }
 
@@ -52,21 +64,30 @@ export class Register {
     setTimeout(() => {
       this.isLoading = false;
       this.successMessage = '¡Registro completado exitosamente!';
-      
-      console.log('✅ Usuario registrado localmente:', this.userData);
-      
+
+      console.log('✅ Usuario registrado localmente:', {
+        ...this.userData,
+        password: '***', // No mostrar la contraseña en console
+        confirmPassword: '***'
+      });
+
+      // Guardar datos básicos en localStorage (sin contraseña por seguridad)
+      localStorage.setItem('userEmail', this.userData.email);
+      localStorage.setItem('userName', `${this.userData.nombre} ${this.userData.apellido}`);
+      localStorage.setItem('userLoggedIn', 'true');
+
       // Mostrar mensaje de éxito
       alert(`🎉 ¡Bienvenido/a ${this.userData.nombre} ${this.userData.apellido}!\n\n` +
             `Tu cuenta ha sido creada exitosamente.\n` +
             `Email: ${this.userData.email}\n` +
             `Experiencia: ${this.userData.experiencia}\n\n` +
-            `¡Gracias por unirte a nuestra comunidad! 🎮`);
-      
-      // Redirigir al home después de 2 segundos
+            `¡Ahora selecciona tu nivel de dificultad! 🎮`);
+
+      // Redirigir al selector de dificultad después de 2 segundos
       setTimeout(() => {
-        this.router.navigate(['/']);
+        this.router.navigate(['/difficulty-selector']);
       }, 2000);
-    }, 1500); // Simular tiempo de procesamiento
+    }, 1500);
   }
 
   // Limpiar formulario
@@ -75,6 +96,8 @@ export class Register {
       nombre: '',
       apellido: '',
       email: '',
+      password: '',
+      confirmPassword: '',
       edad: 0,
       genero: '',
       experiencia: '',

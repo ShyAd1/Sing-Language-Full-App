@@ -1,0 +1,94 @@
+<div class="pixel-bg min-h-screen p-4" *ngIf="currentLesson">
+  <!-- Header -->
+  <div class="lesson-header delay-1">
+    <button class="back-button" (click)="goBack()">← VOLVER</button>
+
+    <div class="lesson-title-section">
+      <div class="lesson-icon">{{ currentLesson.icon }}</div>
+      <h1 class="lesson-title">{{ currentLesson.name }}</h1>
+    </div>
+
+    <div class="player-info">
+      <span class="player-name">{{ playerName }}</span>
+    </div>
+  </div>
+
+  <!-- Contenedor principal -->
+  <div class="lesson-container pixel-fade-in delay-2">
+
+    <!-- Explicación de la lección -->
+    <div class="lesson-explanation delay-3">
+      <h2 class="explanation-title">📚 ¿QUÉ APRENDERÁS?</h2>
+      <p class="explanation-text">{{ currentLesson.explanation }}</p>
+    </div>
+
+    <!-- Grid de videos -->
+    <div class="videos-section delay-4">
+      <h3 class="videos-title">🎥 VIDEOS DE SEÑAS</h3>
+
+      <div class="videos-grid">
+        <div
+          *ngFor="let video of currentLesson.videos; let i = index"
+          class="video-card"
+          (click)="openVideoModal(video)"
+        >
+          <div class="video-thumbnail">
+            <span class="thumbnail-icon">{{ video.thumbnail }}</span>
+            <div class="play-overlay">
+              <span class="play-icon">▶️</span>
+            </div>
+          </div>
+          <h4 class="video-title">{{ video.title }}</h4>
+        </div>
+      </div>
+    </div>
+
+    <!-- Botón iniciar prueba -->
+    <div class="test-section delay-5">
+      <button class="start-test-button" (click)="startTest()">
+        🧪 INICIAR PRUEBA
+      </button>
+      <p class="test-description">
+        Completa todos los videos antes de realizar la prueba
+      </p>
+    </div>
+  </div>
+
+  <!-- Modal de video -->
+  <div class="video-modal" *ngIf="showVideoModal" (click)="closeVideoModal()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3 class="modal-title">{{ selectedVideo?.title }}</h3>
+        <button class="close-button" (click)="closeVideoModal()">✕</button>
+      </div>
+
+      <div class="modal-body">
+        <!-- Área del video -->
+        <div class="video-player">
+          <div class="video-placeholder">
+            <span class="placeholder-icon">{{ selectedVideo?.thumbnail }}</span>
+            <p class="placeholder-text">VIDEO DE DEMOSTRACIÓN</p>
+            <p class="video-description">{{ selectedVideo?.description }}</p>
+          </div>
+        </div>
+
+        <!-- Instrucciones -->
+        <div class="video-instructions">
+          <h4 class="instructions-title">📋 INSTRUCCIONES:</h4>
+          <ul class="instructions-list">
+            <li>👀 Observa cuidadosamente la posición de las manos</li>
+            <li>✋ Practica el movimiento varias veces</li>
+            <li>🔄 Repite el video las veces necesarias</li>
+            <li>💪 Practica hasta que te sientas cómodo</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Estrellas decorativas -->
+  <div class="absolute top-8 left-8 pixel-stars delay-1">★</div>
+  <div class="absolute top-12 right-12 pixel-stars delay-2">★</div>
+  <div class="absolute bottom-8 left-12 pixel-stars delay-3">★</div>
+  <div class="absolute bottom-12 right-8 pixel-stars delay-4">★</div>
+</div>

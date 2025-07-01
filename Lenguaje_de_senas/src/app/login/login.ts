@@ -11,7 +11,7 @@ import { RouterModule } from '@angular/router';
   styleUrl: './login.css'
 })
 export class Login {
-  
+
   // Datos del formulario de login
   loginData = {
     email: '',
@@ -35,7 +35,7 @@ export class Login {
   onSubmit() {
     this.errorMessage = '';
     this.successMessage = '';
-    
+
     if (this.isFormValid()) {
       this.authenticateUser();
     }
@@ -79,26 +79,53 @@ export class Login {
     // Simulamos una llamada a la API con un delay
     setTimeout(() => {
       this.isLoading = false;
-      
+
       // Simulamos validación local - en un caso real esto sería una llamada al backend
       if (this.loginData.email === 'usuario@test.com' && this.loginData.password === '123456') {
         this.successMessage = '¡Inicio de sesión exitoso! Bienvenido de vuelta 🎮';
-        
-        // Guardamos info en localStorage si el usuario quiere recordar la sesión
+
+        // Limpiar cualquier sesión anterior
+        this.clearPreviousSession();
+
+        // Guardamos info de la nueva sesión
+        localStorage.setItem('userLoggedIn', 'true');
+        localStorage.setItem('userEmail', this.loginData.email);
+        localStorage.setItem('userName', 'Usuario Demo');
+
         if (this.loginData.rememberMe) {
-          localStorage.setItem('userLoggedIn', 'true');
-          localStorage.setItem('userEmail', this.loginData.email);
+          localStorage.setItem('rememberSession', 'true');
         }
-        
-        // Redirigimos después de 2 segundos
+
+        // Redirigimos al selector de dificultad después de 2 segundos
         setTimeout(() => {
-          this.router.navigate(['/home']); // o a donde corresponda después del login
+          this.router.navigate(['/difficulty-selector']);
         }, 2000);
-        
+
       } else {
         this.errorMessage = 'Credenciales incorrectas. Usa: usuario@test.com / 123456 para probar';
       }
     }, 1500);
+  }
+
+  // Limpiar sesión anterior
+  private clearPreviousSession() {
+    // Obtener todas las claves del localStorage
+    const keys = Object.keys(localStorage);
+
+    // Eliminar datos de progreso de usuarios anteriores
+    keys.forEach(key => {
+      if (key.startsWith('levelProgress_') || key.startsWith('basicLevelProgress_')) {
+        // Solo eliminar si no es del usuario actual
+        if (!key.includes(this.loginData.email)) {
+          localStorage.removeItem(key);
+        }
+      }
+    });
+
+    // Limpiar datos de sesión anterior
+    localStorage.removeItem('userLoggedIn');
+    localStorage.removeItem('userEmail');
+    localStorage.removeItem('userName');
   }
 
   // Método para recuperar contraseña
@@ -106,7 +133,7 @@ export class Login {
     event.preventDefault();
     this.errorMessage = '';
     this.successMessage = 'Funcionalidad de recuperación de contraseña disponible próximamente 🔧';
-    
+
     // Limpiar mensaje después de 3 segundos
     setTimeout(() => {
       this.successMessage = '';

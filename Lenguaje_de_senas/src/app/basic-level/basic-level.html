@@ -1,0 +1,67 @@
+<div class="pixel-bg min-h-screen p-4">
+  <!-- Header con información del jugador -->
+  <div class="game-header delay-1">
+    <!-- Título del nivel -->
+    <div class="level-title">
+      <h1 class="level-name-header">{{ currentLevel }}</h1>
+    </div>
+
+    <!-- Barra de progreso -->
+    <div class="progress-section">
+      <div class="progress-container-header">
+        <div class="progress-fill" [style.width.%]="progressPercentage"></div>
+      </div>
+    </div>
+
+    <!-- Información del jugador -->
+    <div class="player-info">
+      <span class="player-name-header">{{ playerName }}</span>
+      <div class="hearts-container">
+        <span *ngFor="let heart of [1,2,3,4,5]; let i = index"
+              class="heart"
+              [class.active]="i < playerLives">💖</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Contenedor principal de clases -->
+  <div class="classes-container max-w-6xl mx-auto pixel-fade-in delay-2">
+
+    <!-- Grid de clases -->
+    <div class="classes-grid">
+      <div
+        *ngFor="let lessonClass of classes; let i = index"
+        class="class-card"
+        [class.completed]="lessonClass.completed"
+        (click)="selectClass(lessonClass)"
+      >
+        <!-- Indicador de completado -->
+        <div class="completion-indicator" *ngIf="lessonClass.completed">
+          ✓
+        </div>
+
+        <!-- Contenido de la tarjeta -->
+        <div class="card-content">
+          <div class="class-icon">{{ lessonClass.icon }}</div>
+          <h3 class="class-name">{{ lessonClass.name }}</h3>
+        </div>
+      </div>
+    </div>
+
+    <!-- Botón INICIO -->
+    <div class="inicio-button-container delay-3">
+      <button class="inicio-button" (click)="goBackToDifficulty()">
+        INICIO
+      </button>
+    </div>
+
+    <!-- Robot asistente -->
+    <div class="robot-assistant delay-4" (click)="showHelp()">
+      <div class="robot-body">🤖</div>
+      <div class="speech-bubble">
+        ELIGE POR DONDE EMPEZAR
+      </div>
+    </div>
+
+  </div>
+</div>
